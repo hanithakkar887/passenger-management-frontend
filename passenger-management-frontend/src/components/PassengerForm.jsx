@@ -1,5 +1,3 @@
-
-
 // src/components/PassengerForm.jsx
 import { useState } from 'react';
 import { addPassengers } from '../api';
