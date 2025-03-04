@@ -13,6 +13,7 @@ import {
   User
 } from 'lucide-react';
 
+// Initializes state with an array containing a default empty passenger object
 const PassengerForm = ({ onPassengersAdded }) => {
   const [passengers, setPassengers] = useState([
     {
@@ -28,6 +29,8 @@ const PassengerForm = ({ onPassengersAdded }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState([]);
 
+
+  // Adds a new empty passenger object to the passengers array
   const addPassengerRow = () => {
     setPassengers([
       ...passengers,
@@ -43,18 +46,22 @@ const PassengerForm = ({ onPassengersAdded }) => {
     ]);
   };
 
+  // Updates the specified field of a passenger at the given index with a new value
   const handleInputChange = (index, field, value) => {
     const updatedPassengers = [...passengers];
     updatedPassengers[index][field] = value;
     setPassengers(updatedPassengers);
   };
 
+  // Handles file input changes by updating the specified field (photo or ID card) for a passenger
   const handleFileChange = (index, field, file) => {
     const updatedPassengers = [...passengers];
     updatedPassengers[index][field] = file;
     setPassengers(updatedPassengers);
   };
 
+  // Validates passenger details by checking required fields, age format, and email format. 
+// Stores errors if any fields are invalid and returns true if all inputs are valid.
   const validateForm = () => {
     const newErrors = [];
     
@@ -88,6 +95,7 @@ const PassengerForm = ({ onPassengersAdded }) => {
     return newErrors.length === 0;
   };
 
+   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -167,6 +175,7 @@ const PassengerForm = ({ onPassengersAdded }) => {
   //   setPassengers(updatedPassengers);
   // };
   
+  // Renders a passenger form with dynamic fields for multiple passengers, allowing users to add, remove, and validate entries before submission.
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg border border-indigo-100">
       <h2 className="text-2xl font-bold mb-6 text-indigo-700 flex items-center">

@@ -4,7 +4,8 @@ import { Search, RefreshCw, Download, User, Mail, Phone } from "lucide-react";
 const PassengerTable = ({ passengers = [], onRefresh }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Safety check if API returns invalid data
+  
+  // Ensure passengers is always an array to prevent errors
   const passengerArray = Array.isArray(passengers) ? passengers : [];
 
   // Filter by name or email
@@ -18,12 +19,14 @@ const PassengerTable = ({ passengers = [], onRefresh }) => {
   console.log();
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg mt-8 border border-gray-100">
+       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
         <h2 className="text-2xl font-bold flex items-center text-gray-800">
           <User className="mr-2 text-blue-600" size={24} />
           Passengers List
         </h2>
 
+         {/* Search and Refresh Controls */}
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative">
             <input
@@ -36,6 +39,7 @@ const PassengerTable = ({ passengers = [], onRefresh }) => {
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
           </div>
 
+          {/* Refresh Button */}
           <button
             onClick={onRefresh}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors flex items-center justify-center"
@@ -46,6 +50,7 @@ const PassengerTable = ({ passengers = [], onRefresh }) => {
         </div>
       </div>
 
+       {/* Passenger Table */}
       {filteredPassengers.length > 0 ? (
         <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
           <table className="min-w-full divide-y divide-gray-200">
@@ -76,16 +81,9 @@ const PassengerTable = ({ passengers = [], onRefresh }) => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredPassengers.map((passenger, index) => {
-                // Fix Windows backslash path issues in URLs
-                // const photoUrl = passenger.photo
-                //   ? `http://localhost:5000/uploads/${passenger.photo.replace('uploads\\', '')}`
-                //   : null;
-                // const idCardUrl = passenger.idCard
-                //   ? `http://localhost:5000/uploads/${passenger.idCard.replace('uploads\\', '')}`
-                //   : null;
                 const photoUrl = passenger.photo;
                 const idCardUrl = passenger.idCard;
-                console.log(idCardUrl)
+                // console.log(idCardUrl);
 
                 return (
                   <tr
@@ -123,83 +121,37 @@ const PassengerTable = ({ passengers = [], onRefresh }) => {
                         <span className="text-gray-400">-</span>
                       )}
                     </td>
-                    {/* <td className="px-6 py-4 whitespace-nowrap">
+
+                      {/* Photo */}
+                    <td className="px-6 py-4 whitespace-nowrap">
                       {photoUrl ? (
-                        <div className="relative">
-                          <img
-                            src={photoUrl}
-                            alt={`${passenger.name}'s photo`}
-                            className="h-10 w-10 rounded-full object-cover border border-gray-200 shadow-sm"
-                          />
-                        </div>
+                        <img
+                          src={photoUrl}
+                          alt={`${passenger.name}'s photo`}
+                          className="h-10 w-10 rounded-full object-cover border border-gray-200 shadow-sm"
+                        />
                       ) : (
                         <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
                           <User className="h-5 w-5 text-gray-400" />
                         </div>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {idCardUrl ? (
+
+                    <td className="border p-2">
+                      {passenger.file ? (
                         <a
-                          href={idCardUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800 flex items-center transition-colors"
+                          // href={URL.createObjectURL(passenger.file)}
+                          href="https://drive.google.com/file/d/1oogC467FNqDUEZLwHZ_ct4pI8Si2AurP/view?usp=sharing"
+                          download={passenger.file.name}
+                          className="text-blue-500 underline"
                         >
-                          <Download className="h-4 w-4 mr-1" />
-                          View
+                          <Download />
                         </a>
                       ) : (
-                        <span className="text-gray-400">-</span>
+                        // "No file uploaded"
+                        <Download />
                       )}
-                    </td> */}
-                    <td className="px-6 py-4 whitespace-nowrap">
-  {photoUrl ? (
-    <img
-      src={photoUrl}
-      alt={`${passenger.name}'s photo`}
-      className="h-10 w-10 rounded-full object-cover border border-gray-200 shadow-sm"
-    />
-  ) : (
-    <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
-      <User className="h-5 w-5 text-gray-400" />
-    </div>
-  )}
-</td>
-
-{/* <td className="px-6 py-4 whitespace-nowrap">
-  {idCardUrl ? (
-    <a
-      href={idCardUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-600 hover:text-blue-800 flex items-center transition-colors"
-    >
-      <Download className="h-4 w-4 mr-1" />
-      View
-    </a>
-  ) : (
-    <span className="text-gray-400">-</span>
-  )}
-</td> */}
-
-<td className="border p-2">
-  {passenger.file ? (
-    <a
-      // href={URL.createObjectURL(passenger.file)}
-      href='https://drive.google.com/file/d/1oogC467FNqDUEZLwHZ_ct4pI8Si2AurP/view?usp=sharing'
-      download={passenger.file.name}
-      className="text-blue-500 underline"
-    >
-      <Download/>
-    </a>
-  ) : (
-    // "No file uploaded"
-    <Download/>
-  )}
-</td>
-
-
+                    </td>
                   </tr>
                 );
               })}
@@ -207,6 +159,7 @@ const PassengerTable = ({ passengers = [], onRefresh }) => {
           </table>
         </div>
       ) : (
+        // No passengers message
         <div className="text-center py-16 bg-gray-50 rounded-xl border border-gray-200">
           <Search className="h-12 w-12 text-gray-300 mx-auto mb-4" />
           <p className="text-gray-500 font-medium">

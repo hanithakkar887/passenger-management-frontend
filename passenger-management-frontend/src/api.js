@@ -1,5 +1,7 @@
+// API base URL
 const API_URL = 'https://passenger-management-backend.onrender.com/api';
-// const API_URL = 'https://passenger-management-backend.onrender.com/api';
+
+// Fetch the list of passengers
 export const fetchPassengers = async () => {
   try {
     const response = await fetch(API_URL);
@@ -10,6 +12,7 @@ export const fetchPassengers = async () => {
     const responseData = await response.json();
     console.log('API response:', responseData);
 
+    // Ensure the response contains valid passenger data
     if (!responseData.data || !Array.isArray(responseData.data)) {
       throw new Error('Unexpected API response format');
     }
@@ -21,6 +24,7 @@ export const fetchPassengers = async () => {
   }
 };
 
+// Add a new passenger
 export const addPassengers = async (formData) => {
   try {
     const response = await fetch(`${API_URL}/add`, {
